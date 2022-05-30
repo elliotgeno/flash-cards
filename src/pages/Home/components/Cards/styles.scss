@@ -1,0 +1,92 @@
+@import "styles/_mixins.scss";
+
+// $ratio : 0.6;
+// $min-width:300;
+// $max-width:800;
+// $min-height:$min-width*$ratio;
+// $max-height:$max-width*$ratio;
+
+
+.cards{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height:100%;
+    perspective: 600px;
+    pointer-events: none;
+}
+
+.card{
+    --card-y: -5deg;
+    --card-z: -3deg;
+    position: relative;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:8em;
+    height:5em;
+    border-radius: 0.5em;
+    line-height: 1em;
+    background-color: white;
+    mix-blend-mode: luminosity;
+    transform:rotateY(var(--card-y)) rotateZ(var(--card-z));
+    animation: 10s moveCard ease-in-out infinite, 15s moveCardZ ease-in-out infinite;
+    
+    @include interpolate($font-size:40 80);
+
+    svg{
+        width:100%;
+        height:100%;
+        position:absolute;
+    }
+    
+    span{
+        position: relative;
+        color:#444;
+        padding-bottom: .25em;
+        display: block;
+        z-index: 1;
+    }
+}
+
+.card-selected{
+// background-color: rgb(255, 196, 0);
+}
+
+
+
+
+@keyframes moveCard {
+
+    50% {
+        --card-y: 5deg;
+    }
+
+    100% {
+        --card-y: -5deg;
+    }
+  }
+
+  @keyframes moveCardZ {
+
+    50% {
+        --card-z: 3deg;
+    }
+
+    100% {
+        --card-z: -3deg;
+    }
+  }
+
+  @property --card-y {
+    syntax: '<angle>';
+    initial-value: -5deg;
+    inherits: false;
+  }
+
+  @property --card-z {
+    syntax: '<angle>';
+    initial-value: -3deg;
+    inherits: false;
+  }

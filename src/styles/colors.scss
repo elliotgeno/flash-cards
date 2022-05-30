@@ -1,0 +1,15 @@
+$light:#ffffff;
+$dark: #000000;
+
+$correct: #008049;
+$incorrect:#bb4c1c;
+
+
+
+:root {
+    --hue:20;
+  }
+
+$color1:hsl(calc(var(--hue) + 230), 65%, 60%);//230
+$color2: hsl(calc(var(--hue) + 300), 65%, 60%);//300
+$color3: hsl(calc(var(--hue) + 40), 100%, 70%);//40

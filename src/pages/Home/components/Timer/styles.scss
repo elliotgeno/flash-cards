@@ -1,0 +1,16 @@
+@import "styles/_mixins.scss";
+
+.timer{
+    line-height: 1em;
+    height: 1em;
+    font-weight: bold;
+    position: fixed;
+    bottom:0.8em;
+    left:0.4em;
+   color:white;
+   
+   input{
+       display: none;
+   }
+}
+

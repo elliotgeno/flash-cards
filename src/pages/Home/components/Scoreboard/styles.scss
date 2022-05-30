@@ -1,0 +1,43 @@
+@import "styles/_mixins.scss";
+@import "styles/colors.scss";
+
+.scoreboard{
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+
+    button{
+        background: none;
+        border: none;
+        font-size: 1em;
+        padding:0;
+        margin:0 0.2em;
+        margin-bottom: 0.7em;
+        display: flex;
+        align-items: center;
+        color:white;
+        font-weight: bold;
+
+        &:hover,&:focus-visible{
+            outline:none;
+            color:white;
+        }
+
+        svg{
+            width:1.1em;
+            height:100%;
+        }
+
+    }
+    .scoreboard-correct{
+        color: white;
+    }
+}
+
+.scoreboard-disabled{
+    pointer-events: none;
+}
+

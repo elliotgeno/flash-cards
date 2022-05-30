@@ -1,0 +1,44 @@
+@import "styles/_mixins.scss";
+
+$min-width:25rem;
+.word-list-container{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    top:3em;
+    left:0;
+    width:100vw;
+    height:100vh;
+    pointer-events: none;
+}
+
+.word-list{
+    position: absolute;
+    top:0;
+    left:50%;
+    display:flex;
+    // position: relative;
+    flex-direction: column;
+    min-width: $min-width;
+    padding:2rem;
+    transform: translateX(-50%);
+    // z-index: 2;
+    background-color: grey;
+    border-radius: 1rem;
+    pointer-events: all;
+
+    &__close{
+        position: absolute;
+        right:0;
+        top:0;
+    }
+
+    &__title{
+        min-width: $min-width;
+    }
+
+    &__word-list{
+        font-family: sans-serif;
+        min-width: $min-width;
+    }
+}

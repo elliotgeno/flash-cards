@@ -1,0 +1,106 @@
+@import "styles/colors.scss";
+@import "styles/_mixins";
+@import "styles/_fonts";
+@import "styles/_variables";
+@import "styles/_animations";
+
+html {
+  @include font-size($root-font-size, $phone-portrait);
+
+  @include tablet-portrait {
+    @include font-size($root-font-size, $tablet-portrait);
+  }
+
+  @include tablet-landscape {
+    @include font-size($root-font-size, $tablet-landscape);
+  }
+
+  @include desktop {
+    @include font-size($root-font-size, $desktop);
+  }
+
+  @include desktop-large {
+    @include font-size($root-font-size, $desktop-large);
+  }
+
+  scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #333;
+  margin: 0;
+  @include font-regular;
+  line-height: 1.5em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include interpolate($font-size: $body-mobile $body-desktop);
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  color: $dark;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  /* make scrollbar transparent */
+}
+
+.h1,
+h1 {
+  @include interpolate($font-size: $h1-mobile $h1-desktop);
+}
+
+.h2,
+h2 {
+  @include interpolate($font-size: $h2-mobile $h2-desktop);
+}
+
+.h3,
+h3 {
+  @include interpolate($font-size: $h3-mobile $h3-desktop);
+}
+
+.h4,
+h4 {
+  @include interpolate($font-size: $h4-mobile $h4-desktop);
+}
+
+.h5,
+h5 {
+  @include interpolate($font-size: $h5-mobile $h5-desktop);
+}
+
+.h6,
+h6 {
+  @include interpolate($font-size: $h6-mobile $h6-desktop);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  @include font-bold;
+  line-height: 1.2;
+  margin: 0;
+  margin-bottom: 0.25em;
+}
+
+
+
+.size{
+  @include interpolate($font-size:30 50);
+}

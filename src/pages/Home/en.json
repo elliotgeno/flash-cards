@@ -1,0 +1,5 @@
+{
+    "word-list-title": "List Title",
+    "word-list-placeholder": "Add words separated by commas.",
+    "delete-list": "Delete “{{list}}” list?"
+}

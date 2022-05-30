@@ -1,0 +1,69 @@
+@import "styles/_mixins.scss";
+@import "styles/colors.scss";
+
+.color-slider{
+    position: fixed;
+    right:1.5em;
+    top:0.3em;
+
+
+    &:focus-within,&:focus{
+outline: none;
+        .color-selector{
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+   
+
+    svg{
+        width:1em;
+        height:1em;
+    }
+
+
+    .color-selector{
+        opacity: 0;
+        position: absolute;
+        left:-3em;
+        top:100% ;
+        mix-blend-mode:screen;
+        padding: 0.5em 0;
+        pointer-events: none;
+
+        &--groove{
+            width:5em;
+            height: 0.2em;
+            border-radius: 1em;
+            background-color: white;
+        }
+
+        &--dot{
+            position: absolute;
+            width:0.4em;
+            height: 0.4em;
+            border-radius:0.4em;
+            background-color: white;
+            outline: solid #444 4px;
+            transform: translate(-.2em, -.1em);
+        }
+
+        input{
+            // width:10rem;
+            width:100%;
+            height:100%;
+            top:0;
+            left:0;
+            position: absolute;
+            opacity: 0;
+        }
+    
+        label{
+            opacity: 0;
+            position: absolute;
+            left:-10000px;
+        }
+    }
+
+    
+}

@@ -1,0 +1,161 @@
+// WAYPOINTS design for the following layouts
+$phone-portrait: 375; // smallest phone size (portrait)
+// $phone-landscape: 568; // smallest phone (landscape)
+$tablet-portrait: 768; // common tablet (portrait)
+$tablet-landscape: 1024; // common tablet (landscape)
+$desktop: 1440; //  desktop
+$desktop-large: 1920; //  desktop large
+
+// FONT SIZES for various device types
+$root-font-size: 14 !default; // DO NOT GO BELOW 12
+
+// Calculation for finding font size for device type
+@mixin font-size($size, $device) {
+	font-size: $size/$device * 100 + vw;
+}
+
+@function strip-units($number) {
+	@if ($number==null) {
+		@return null;
+	}
+
+	@return $number / ($number * 0 + 1);
+}
+
+@function rem($pixels) {
+	$pixels: strip-units($pixels);
+	$unitless-base-font-size: strip-units($root-font-size);
+	@return ($pixels / $unitless-base-font-size) * 1rem;
+}
+
+// BREAKPOINTS
+
+@mixin phone-portrait() {
+	@media only screen and (max-width: 599px) {
+		@content;
+	}
+}
+
+// @mixin phone-landscape() {
+// 	@media only screen and (max-height: $small + px) {
+// 		@content;
+// 	}
+// }
+
+@mixin tablet-portrait() {
+	@media only screen and (min-width: 600px) and (max-width: 899px) {
+		@content;
+	}
+}
+
+@mixin tablet-portrait-up() {
+	@media only screen and (min-width: 600px) {
+		@content;
+	}
+}
+
+@mixin tablet-portrait-down() {
+	@media only screen and (max-width: 899px) {
+		@content;
+	}
+}
+
+@mixin tablet-landscape() {
+	@media only screen and (min-width: 900px) and (max-width: 1199px) {
+		@content;
+	}
+}
+
+@mixin tablet-landscape-up() {
+	@media only screen and (min-width: 900px) {
+		@content;
+	}
+}
+
+@mixin tablet-landscape-down() {
+	@media only screen and (max-width: 1199px) {
+		@content;
+	}
+}
+
+@mixin desktop() {
+	@media only screen and (min-width: 1200px) and (max-width: 1499px) {
+		@content;
+	}
+}
+
+@mixin desktop-up() {
+	@media only screen and (min-width: 1200px) {
+		@content;
+	}
+}
+
+@mixin desktop-down() {
+	@media only screen and (max-width: 1499px) {
+		@content;
+	}
+}
+
+@mixin desktop-large() {
+	@media only screen and (min-width: 1500px) {
+		@content;
+	}
+}
+
+
+
+// INTERPOLATION
+@mixin interpolate($properties...) {
+	@include phone-portrait {
+
+		@each $property,
+		$values in keywords($properties) {
+			$min: nth($values, 1);
+			#{$property}: rem($min);
+		}
+	}
+
+	@include tablet-portrait {
+
+		@each $property,
+		$values in keywords($properties) {
+			$min: nth($values, 1);
+			$max: nth($values, 2);
+			$increment: ($max - $min) / 3;
+			#{$property}: rem($min + $increment);
+		}
+	}
+
+	@include tablet-landscape {
+
+		@each $property,
+		$values in keywords($properties) {
+			$min: nth($values, 1);
+			$max: nth($values, 2);
+			$increment: ($max - $min) / 3;
+			#{$property}: rem($min + ($increment * 2));
+		}
+	}
+
+	@include desktop {
+
+		@each $property,
+		$values in keywords($properties) {
+			$min: nth($values, 1);
+			$max: nth($values, 2);
+			$increment: ($max - $min) / 3;
+			#{$property}: rem($min + ($increment * 3));
+		}
+	}
+
+	@include desktop-large {
+
+		@each $property,
+		$values in keywords($properties) {
+			$min: nth($values, 1);
+			$max: nth($values, 2);
+			$increment: ($max - $min) / 3;
+			#{$property}: rem($min + ($increment * 4));
+		}
+	}
+}

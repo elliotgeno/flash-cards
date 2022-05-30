@@ -1,0 +1,13 @@
+@import "styles/_mixins.scss";
+.fullscreen{
+    position: fixed;
+    background: none;
+    border:none;
+    outline:none;
+    
+    width:1em;
+    height:1em;
+
+    right:0.3em;
+    top:0.2em;
+}
