@@ -20,10 +20,12 @@ const Home = () => {
     const [wordlists, setWordLists] = useLocalStorage({
         "Sample List": "Cat, Dog, Bird, Horse, Cow"
     }, "FLASHCARDS_wordlists");
+    // const [isReview, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [list, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [listVisible, setListVisible] = useState(false);
     const [cardIndex, setCardIndex] = useState(0);
     const [correct, setCorrect] = useState([]);
+    const [reset, setReset] = useState(false);
     const [incorrect, setIncorrect] = useState([]);
     const [answers, setAnswers] = useState([]);
     const cardString = wordlists?.[list];
@@ -71,6 +73,7 @@ const Home = () => {
     };
 
     const onIncorrect = () => {
+
         setIncorrect([...incorrect, cards[cardIndex]]);
         setAnswers([...answers, { correct: false, answer: cards[cardIndex] }]);
         setCardIndex(cardIndex + 1);
@@ -83,7 +86,12 @@ const Home = () => {
     };
 
     const onReview = () => {
-
+        setCards(incorrect.sort(() => Math.random() - 0.5));
+        setAnswers([])
+        setCorrect([]);
+        setIncorrect([]);
+        setReset(true);
+        setCardIndex(0);
     };
 
     const onReset = () => {
@@ -98,13 +106,16 @@ const Home = () => {
 
     return (
         <div className="container">
+            <div className='background'></div>
             <Controls list={list} wordlists={wordlists} onChange={onListChange} onEdit={onEdit} />
-            <ColorSlider />
-            <Fullscreen />
+            <div className='size top-right-controls'>
+                <ColorSlider />
+                <Fullscreen />
+            </div>
             <Finish score={correct.length / cards.length} index={cardIndex} cards={cards} onReview={onReview} onReset={onReset} />
             <Cards cards={cards} index={cardIndex} />
             <Scoreboard disabled={finished} incorrect={incorrect.length} onIncorrect={onIncorrect} correct={correct.length} onCorrect={onCorrect} />
-            <Timer disabled={finished} />
+            <Timer disabled={finished} reset={reset} />
             <Progress countdown={cards.length - cardIndex} progress={cardIndex / cards.length} answers={answers} />
             <Overlay visible={listVisible} onClick={onCloseOverlay} />
             {

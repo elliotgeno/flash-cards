@@ -6,24 +6,48 @@
 .container {
     --angle: 0deg;
     position: fixed;
-   width:100vw;
+   min-width:100vw;
    height:100vh;
    background-color: #4158D0;
-   background-image: linear-gradient(var(--angle), $color1 0%, $color2 50%, $color3 100%);
-   transition: all;
-   
-   animation: 10s rotate linear infinite;
 
+   .background{
+     display: flex;
+     position: fixed;
+     top:0;
+     left:0;
+     width:100vw;
+     height: 100vh;
+     align-items: center;
+     justify-content: center;
+    
+     &:after{
+      content:"";
+      display: block;
+      min-width:145vmax;
+      min-height:145vmax;
+      transform: rotate(0deg);
+      background-image: linear-gradient(0deg, $color1 15%, $color2 50%, $color3 85%);
+      transition: transform;
+      animation: 10s rotate linear infinite;
+     }
+   }
+
+   
+}
+
+.top-right-controls{
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  top:0.3em;
+  right:0.5em;
 }
 
 @keyframes rotate {
-    to {
-      --angle: 360deg;
-    }
+  to {
+    transform: rotate(360deg);
   }
-
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
 }
+

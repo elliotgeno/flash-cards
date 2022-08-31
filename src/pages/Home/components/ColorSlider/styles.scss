@@ -2,10 +2,7 @@
 @import "styles/colors.scss";
 
 .color-slider{
-    position: fixed;
-    right:1.5em;
-    top:0.3em;
-
+   
 
     &:focus-within,&:focus{
 outline: none;
@@ -25,7 +22,7 @@ outline: none;
     .color-selector{
         opacity: 0;
         position: absolute;
-        left:-3em;
+        right:0;
         top:100% ;
         mix-blend-mode:screen;
         padding: 0.5em 0;
@@ -44,8 +41,8 @@ outline: none;
             height: 0.4em;
             border-radius:0.4em;
             background-color: white;
-            outline: solid #444 4px;
-            transform: translate(-.2em, -.1em);
+            border: solid #444 4px;
+            transform: translate(-.2em, calc(-.1em - 4px));
         }
 
         input{
