@@ -27,6 +27,8 @@ const WordList = ({ title: initialTitle, list: initialList, onClose = () => { },
         onDelete();
     }
 
+    const onShare = () => { window.alert("Copied this link") }
+
     const createList = () => {
         setTitle("");
         setList("");
@@ -36,14 +38,28 @@ const WordList = ({ title: initialTitle, list: initialList, onClose = () => { },
     return (
         <div className='word-list-container'>
             <div className="word-list">
-                <button className="word-list__close" onClick={onClose}>X</button>
-                <input className="word-list__title" type="text" placeholder={t("word-list-title")} value={title} onChange={onTitle} />
-                <textarea className="word-list__word-list" id="word-list" name="word-list" placeholder={t("word-list-placeholder")} value={list} onChange={onList} />
-                <div>
-                    <button onClick={removeList}>-</button>
-                    <button onClick={createList}>+</button>
-                    <button onClick={onCommit} disabled={title === ""}>SAVE</button>
+
+                <div className="word-list__title-container">
+                    <input className="word-list__title" type="text" placeholder={t("word-list-title")} value={title} onChange={onTitle} />
+
+                    <div className="word-list__list-management">
+                        <button onClick={removeList} className="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                <path fill="none" stroke="currentColor" d="M72 24v54a6 6 0 01-6 6H34a6 6 0 01-6-6V24m29 14v31M43 38v31M22 24h56m-37-8h18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
+                {/* <textarea className="word-list__word-list" id="word-list" name="word-list" placeholder={t("word-list-placeholder")} value={list} onChange={onList} /> */}
+                <div class="word-list__word-list-wrap" data-replicated-value={list}>
+                    <textarea className="word-list__word-list" id="word-list" name="word-list" placeholder={t("word-list-placeholder")} value={list} onInput={onList} />
+                </div>
+                <div className='word-list__buttons'>
+                    {/* <button className="save" onClick={onShare} disabled={title === ""}>share</button> */}
+                    <button className="save invert" onClick={onCommit} disabled={title === ""}>save</button>
+
+                </div>
+
             </div>
         </div>
     );

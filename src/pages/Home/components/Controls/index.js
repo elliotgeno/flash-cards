@@ -1,6 +1,6 @@
 import './styles.scss';
 
-const WordList = ({ list, wordlists, onChange = () => { }, onEdit = () => { } }) => {
+const Controls = ({ list, wordlists, onChange = () => { }, onEdit = () => { } }) => {
 
     const onSelect = event => onChange(event.target.value)
 
@@ -15,6 +15,9 @@ const WordList = ({ list, wordlists, onChange = () => { }, onEdit = () => { } })
                             <option value={key} key={`${key}-${index}`} >{key}</option>
                         ))
                     }
+                    {/* <option disabled />
+                    <option value="new-list"  >– New List –</option> */}
+
                 </select>
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -39,4 +42,4 @@ const WordList = ({ list, wordlists, onChange = () => { }, onEdit = () => { } })
     );
 }
 
-export default WordList;
+export default Controls;
