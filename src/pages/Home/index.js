@@ -18,7 +18,14 @@ const Home = () => {
 
 
     const [wordlists, setWordLists] = useLocalStorage({
-        "Sample List": "Cat, Dog, Bird, Horse, Cow"
+        "Kindergarten - 1": "am, and, at, can, ran, get, red, big, did, in, is, it, not, on, but, run, up, ate, came, here, make, ride, white",
+        "Kindergarten - 2": "I, a, the, to, play, see, for, like, have, you, who, what, where, go, so, look, want, come, said, saw, be, he, she, me",
+        "Kindergarten - 3": "we, black, blue, brown, yellow, are, little, with, find, no, they, help, jump, was, will, went, one, two, three, four, that, this, there, do",
+        "Kindergarten - 4": "my, too, down, must, now, well, new, all, good, say, our, out, eat, soon, please, under, into pretty, funny, away",
+        "First - 1": "of, his, her, him, had, some, as, then, could, when, were, them, ask, an, over, just, from, any, how, know, put, take, every, old",
+        "First - 2": "by, after, think, let, going, walk, again, may, stop, fly, round, give, once, open, has, live, thank",
+        "Second - 1": "pull, sit, tell, best, both, fast, wash, wish, call, cold, sing, five, gave, made, write, why, would, very, your, around, don’t, green, sleep, their",
+        "Second - 2": "us, or, been, before, always, friend, buy, these, those, does, goes, use, which, many, found, because, upon, read, work, first, off",
     }, "FLASHCARDS_wordlists");
     // const [isReview, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [list, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
