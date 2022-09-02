@@ -92,6 +92,7 @@ const Home = () => {
             const nextList = deleteList(list);
             if (nextList !== "") {
                 onClose();
+                window.location.reload();
             }
         }
     };
