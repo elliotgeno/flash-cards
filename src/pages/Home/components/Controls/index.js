@@ -15,8 +15,8 @@ const Controls = ({ list, wordlists, onChange = () => { }, onEdit = () => { } })
                             <option value={key} key={`${key}-${index}`} >{key}</option>
                         ))
                     }
-                    {/* <option disabled />
-                    <option value="new-list"  >– New List –</option> */}
+                    <option disabled />
+                    <option value="new-list"  >– New List –</option>
 
                 </select>
                 <span>

@@ -4,7 +4,7 @@ const NUM_STARS = 5;
 
 const Finish = ({ score = 0, cards = [], index = 0, review = true, onReview = () => { }, onReset = () => { } }) => {
 
-    const percent = `${score * 100}%`
+    const percent = `${score * 100}%`;
 
     return index >= cards.length && (
         <div className='size finish'>
@@ -27,7 +27,7 @@ const Finish = ({ score = 0, cards = [], index = 0, review = true, onReview = ()
 
             </svg>
             <div>
-                {review && <button className='invert' onClick={onReview}>review</button>}
+                {score < 1 && <button className='invert' onClick={onReview}>review</button>}
                 <button onClick={onReset}>reset</button>
             </div>
         </div>

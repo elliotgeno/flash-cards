@@ -13,20 +13,22 @@ import Fullscreen from './components/Fullscreen';
 import Finish from './components/Finish';
 import ColorSlider from './components/ColorSlider';
 
+const INIT_LIST = {
+    "Kindergarten - 1": "am, and, at, can, ran, get, red, big, did, in, is, it, not, on, but, run, up, ate, came, here, make, ride, white",
+    "Kindergarten - 2": "I, a, the, to, play, see, for, like, have, you, who, what, where, go, so, look, want, come, said, saw, be, he, she, me",
+    "Kindergarten - 3": "we, black, blue, brown, yellow, are, little, with, find, no, they, help, jump, was, will, went, one, two, three, four, that, this, there, do",
+    "Kindergarten - 4": "my, too, down, must, now, well, new, all, good, say, our, out, eat, soon, please, under, into pretty, funny, away",
+    "First - 1": "of, his, her, him, had, some, as, then, could, when, were, them, ask, an, over, just, from, any, how, know, put, take, every, old",
+    "First - 2": "by, after, think, let, going, walk, again, may, stop, fly, round, give, once, open, has, live, thank",
+    "Second - 1": "pull, sit, tell, best, both, fast, wash, wish, call, cold, sing, five, gave, made, write, why, would, very, your, around, don’t, green, sleep, their",
+    "Second - 2": "us, or, been, before, always, friend, buy, these, those, does, goes, use, which, many, found, because, upon, read, work, first, off",
+}
+
 const Home = () => {
     const { t } = useTranslation("home");
 
 
-    const [wordlists, setWordLists] = useLocalStorage({
-        "Kindergarten - 1": "am, and, at, can, ran, get, red, big, did, in, is, it, not, on, but, run, up, ate, came, here, make, ride, white",
-        "Kindergarten - 2": "I, a, the, to, play, see, for, like, have, you, who, what, where, go, so, look, want, come, said, saw, be, he, she, me",
-        "Kindergarten - 3": "we, black, blue, brown, yellow, are, little, with, find, no, they, help, jump, was, will, went, one, two, three, four, that, this, there, do",
-        "Kindergarten - 4": "my, too, down, must, now, well, new, all, good, say, our, out, eat, soon, please, under, into pretty, funny, away",
-        "First - 1": "of, his, her, him, had, some, as, then, could, when, were, them, ask, an, over, just, from, any, how, know, put, take, every, old",
-        "First - 2": "by, after, think, let, going, walk, again, may, stop, fly, round, give, once, open, has, live, thank",
-        "Second - 1": "pull, sit, tell, best, both, fast, wash, wish, call, cold, sing, five, gave, made, write, why, would, very, your, around, don’t, green, sleep, their",
-        "Second - 2": "us, or, been, before, always, friend, buy, these, those, does, goes, use, which, many, found, because, upon, read, work, first, off",
-    }, "FLASHCARDS_wordlists");
+    const [wordlists, setWordLists] = useLocalStorage(INIT_LIST, "FLASHCARDS_wordlists");
     // const [isReview, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [list, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [listVisible, setListVisible] = useState(false);
@@ -37,20 +39,34 @@ const Home = () => {
     const [answers, setAnswers] = useState([]);
     const cardString = wordlists?.[list];
 
-    const [cards, setCards] = useState(cardString.split(", ").sort(() => Math.random() - 0.5));
+    const [cards, setCards] = useState(cardString?.split(", ")?.sort(() => Math.random() - 0.5));
 
-    const finished = answers.length >= cards.length;
+    const cardLength = cards?.length ?? 0;
+
+
+
+    const finished = answers.length >= cardLength;
 
     useEffect(() => {
-        setCards(cardString.split(", ").sort(() => Math.random() - 0.5));
+        setCards(cardString?.split(", ")?.sort(() => Math.random() - 0.5));
     }, [cardString]);
 
     const onListChange = value => {
-        setList(value);
-        window.location.reload();
+        if (value === "new-list") {
+            onNew();
+        } else {
+            setList(value);
+            window.location.reload();
+        }
     }
     const onEdit = () => setListVisible(true);
-    const onClose = () => setListVisible(false);
+    const onClose = () => {
+        if (list === "" && cardLength > 0) {
+            deleteList("");
+            window.location.reload();
+        }
+        setListVisible(false);
+    }
 
     const onSave = (key, value) => {
         let newLists = { ...wordlists };
@@ -62,13 +78,21 @@ const Home = () => {
         window.location.reload();
     }
 
+    const deleteList = (targetList) => {
+        let newLists = { ...wordlists };
+        delete newLists?.[targetList];
+        setWordLists(newLists);
+        const nextList = Object.entries(newLists)?.[0]?.[0] ?? "";
+        setList(nextList);
+        return nextList;
+    }
+
     const onDelete = () => {
         if (window.confirm(t("delete-list", { list: list }))) {
-            let newLists = { ...wordlists };
-            delete newLists?.[list];
-            setWordLists(newLists);
-            onClose();
-            setList(Object.entries(wordlists)?.[0]?.[0]);
+            const nextList = deleteList(list);
+            if (nextList !== "") {
+                onClose();
+            }
         }
     };
 
@@ -77,10 +101,11 @@ const Home = () => {
         newLists[""] = "";
         setWordLists(newLists);
         setList("");
+        setListVisible(true);
+        setReset(true)
     };
 
     const onIncorrect = () => {
-
         setIncorrect([...incorrect, cards[cardIndex]]);
         setAnswers([...answers, { correct: false, answer: cards[cardIndex] }]);
         setCardIndex(cardIndex + 1);
@@ -105,35 +130,33 @@ const Home = () => {
         window.location.reload();
     };
 
-
-
-
-
-    const onCloseOverlay = () => setListVisible(false);
-
     return (
         <div className="container">
             <div className='background'></div>
-            <Controls list={list} wordlists={wordlists} onChange={onListChange} onEdit={onEdit} />
-            <div className='size top-right-controls'>
-                <ColorSlider />
-                <Fullscreen />
-            </div>
-            <Finish score={correct.length / cards.length} index={cardIndex} cards={cards} onReview={onReview} onReset={onReset} />
-            <Cards cards={cards} index={cardIndex} />
-            <Scoreboard disabled={finished} incorrect={incorrect.length} onIncorrect={onIncorrect} correct={correct.length} onCorrect={onCorrect} />
-            <Timer disabled={finished} reset={reset} />
-            <Progress countdown={cards.length - cardIndex} progress={cardIndex / cards.length} answers={answers} />
-            <Overlay visible={listVisible} onClick={onCloseOverlay} />
             {
-                listVisible &&
+                cardLength > 0 &&
+                <>
+                    <Controls list={list} wordlists={wordlists} onChange={onListChange} onEdit={onEdit} />
+                    <div className='size top-right-controls'>
+                        <ColorSlider />
+                        <Fullscreen />
+                    </div>
+                    <Finish score={correct.length / cardLength} index={cardIndex} cards={cards} onReview={onReview} onReset={onReset} />
+                    <Cards cards={cards} index={cardIndex} />
+                    <Scoreboard disabled={finished} incorrect={incorrect.length} onIncorrect={onIncorrect} correct={correct.length} onCorrect={onCorrect} />
+                    <Timer disabled={finished || reset} reset={reset} />
+                    <Progress countdown={cardLength - cardIndex} progress={cardIndex / cardLength} answers={answers} />
+                </>
+            }
+            <Overlay visible={listVisible || cardLength === 0} onClick={onClose} />
+            {
+                (listVisible || cardLength === 0) &&
                 <WordList
                     title={list}
+                    cardLength={cardLength}
                     list={cardString}
-                    onClose={onClose}
                     onSave={onSave}
                     onDelete={onDelete}
-                    onNew={onNew}
                 />
             }
         </div>
