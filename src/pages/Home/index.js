@@ -24,12 +24,16 @@ const INIT_LIST = {
     "Second - 2": "us, or, been, before, always, friend, buy, these, those, does, goes, use, which, many, found, because, upon, read, work, first, off",
 }
 
+
+
+const query = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+});
+
+
 const Home = () => {
     const { t } = useTranslation("home");
-
-
     const [wordlists, setWordLists] = useLocalStorage(INIT_LIST, "FLASHCARDS_wordlists");
-    // const [isReview, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [list, setList] = useLocalStorage(Object.entries(wordlists)?.[0]?.[0], "FLASHCARDS_selected");
     const [listVisible, setListVisible] = useState(false);
     const [cardIndex, setCardIndex] = useState(0);
@@ -38,13 +42,9 @@ const Home = () => {
     const [incorrect, setIncorrect] = useState([]);
     const [answers, setAnswers] = useState([]);
     const cardString = wordlists?.[list];
-
     const [cards, setCards] = useState(cardString?.split(", ")?.sort(() => Math.random() - 0.5));
-
     const cardLength = cards?.length ?? 0;
-
-
-
+    const { title, words } = query;
     const finished = answers.length >= cardLength;
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const Home = () => {
         newLists = Object.fromEntries(Object.entries(newLists).sort((a, b) => a[0].toLocaleUpperCase().localeCompare(b[0].toLocaleUpperCase())));
         setWordLists(newLists);
         setList(key);
-        window.location.reload();
+        window.location.href = window.location.origin;
     }
 
     const deleteList = (targetList) => {
@@ -97,13 +97,13 @@ const Home = () => {
         }
     };
 
-    const onNew = () => {
+    const onNew = (title, words = "") => {
         let newLists = { ...wordlists }
-        newLists[""] = "";
+        newLists[""] = words;
         setWordLists(newLists);
         setList("");
         setListVisible(true);
-        setReset(true)
+        setReset(true);
     };
 
     const onIncorrect = () => {
@@ -130,6 +130,19 @@ const Home = () => {
     const onReset = () => {
         window.location.reload();
     };
+
+
+
+    useEffect(() => {
+        if (title) {
+            const wordList = words.replaceAll(" ", ", ");
+            let newLists = { ...wordlists }
+            newLists[title] = wordList;
+            setWordLists(newLists);
+            setList(title);
+            window.location.href = window.location.origin
+        }
+    }, [title, words]);
 
     return (
         <div className="container">

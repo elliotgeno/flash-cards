@@ -8,15 +8,22 @@ const WordList = ({ title: initialTitle, list: initialList, cardLength, onClose 
     const [title, setTitle] = useState(initialTitle);
     const [list, setList] = useState(initialList);
 
+
+
     const onTitle = ({ target }) => setTitle(target.value);
     const onList = ({ target }) => setList(target.value);
 
-    const onCommit = () => {
+    const clean = () => {
         let string = list.replace(/,/g, ', ').replace(/\s+/g, ' ').replace(/ ,/g, ',').replace(/,,/g, ',').trim();
         string = string.split(', ').filter(function (item, pos, self) {
             return self.indexOf(item) === pos;
         }).sort().join(", ");
         setList(string);
+        return string;
+    }
+
+    const onCommit = () => {
+        const string = clean();
         onSave(title, string);
         onClose();
     };
@@ -27,7 +34,24 @@ const WordList = ({ title: initialTitle, list: initialList, cardLength, onClose 
         onDelete();
     }
 
-    const onShare = () => { window.alert("Copied this link") }
+    const onShare = () => {
+        const string = clean();
+        const queryString = `title=${encodeURIComponent(title)}&words=${string.replace(/\s/g, '').replaceAll(",", "+")}`;
+        const url = `${window.location.origin}?${queryString}`;
+
+        if (navigator.share) {
+            navigator.share({
+                title: `Flash Card List: ${title}`,
+                url: url
+            }).then(() => {
+                window.alert("Thanks for sharing!")
+            }).catch(window.alert("Sorry something went wrong!"));
+        } else {
+            navigator.clipboard.writeText(url).then(() => window.alert(`A link to ${title} has been copied!`));
+        }
+
+    }
+
 
 
     return (
@@ -53,7 +77,7 @@ const WordList = ({ title: initialTitle, list: initialList, cardLength, onClose 
                     <textarea className="word-list__word-list" id="word-list" name="word-list" placeholder={t("word-list-placeholder")} value={list} onInput={onList} />
                 </div>
                 <div className='word-list__buttons'>
-                    {/* <button className="save" onClick={onShare} disabled={title === ""}>share</button> */}
+                    <button className="save" onClick={onShare} disabled={title === ""}>share</button>
                     <button className="save invert" onClick={onCommit} disabled={title === ""}>save</button>
 
                 </div>
